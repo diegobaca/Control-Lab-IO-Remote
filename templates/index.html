@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Control Lab IO Remote, v1.0.0, March 24, 2024. Created by Diego Baca © 2024 - www.controllab.io -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <!-- Material Symbols Outlined -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+
+    <!--Icons-->
+    <link rel="apple-touch-icon" sizes="192x192" href="/static/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon-16x16.png">
+    <link rel="mask-icon" href="/static/assets/safari-pinned-tab.svg" color="#3c4653">
+    <meta name="apple-mobile-web-app-title" content="Control Lab IO">
+    <meta name="application-name" content="Control Lab IO">
+    <meta name="msapplication-TileColor" content="#212529">
+    <meta name="theme-color" content="#212529">
+
+    <title>Control Lab IO</title>
+
+    <!-- Pre-Style -->
+    <style>
+        html {
+            visibility: hidden;
+            opacity: 0;
+        }
+    </style>
+
+    <!-- Font Face Observer -->
+    <script src="/static/js/fontfaceobserver.js"></script>
+    <script>
+        var font = new FontFaceObserver('Material Symbols Outlined');
+
+        font.load().then(function () {
+            // When the font is loaded, add the link to your CSS
+            var materializeLink = document.createElement('link');
+            materializeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css';
+            materializeLink.rel = 'stylesheet';
+            document.head.appendChild(materializeLink);
+
+            var customStyleLink = document.createElement('link');
+            customStyleLink.href = '/static/css/styles.css';
+            customStyleLink.rel = 'stylesheet';
+            document.head.appendChild(customStyleLink);
+        }).catch(function (e) {
+            console.error('Font is not available', e);
+        });
+    </script>
+</head>
+
+<body class="no-transition">
+    <div id="focus-target" tabindex="-1" style="position: absolute; left: -9999px; top: -9999px;"></div>
+
+    <div class="container">
+        <!-- Custom container for Title with Image -->
+        <div class="title-container">
+            <!-- Logo and Title Group -->
+            <div class="logo-title-group">
+                <img src="/static/assets/logo.png" alt="Logo" class="logo-image">
+                <h5 class="title-text">Control Lab IO</h5>
+            </div>
+            <!-- Theme Toggle Button -->
+            <div class="theme-toggle-button">
+                <button id="theme-toggle-btn" onclick="toggleTheme()" class="btn-floating light-blue"
+                    title="Toggle theme" tabindex="1">
+                    <i class="material-symbols-outlined" id="theme-icon">light_mode</i> <!-- Default icon -->
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom container for Connection, Sending, Save, and Load Buttons -->
+        <div id="sticky-sentinel"></div>
+        <div class="connection-container">
+            <!-- Connection Button (Left aligned) -->
+            <button id="connection-btn" onclick="sendCommand('/toggle_connection', 0)"
+                class="btn-floating btn-large btn-black-theme" title="Connect or disconnect" tabindex="2">
+                <i class="material-symbols-outlined" id="connection-icon">link</i> <!-- Default icon -->
+            </button>
+            <!-- Sending Button (Centered) -->
+            <div class="flex-grow">
+                <button id="sending-btn" onclick="toggleSending()" class="btn-floating btn-large"
+                    title="Play or pause motors" tabindex="3">
+                    <i class="material-symbols-outlined" id="sending-icon">pause</i> <!-- Default icon -->
+                </button>
+            </div>
+            <!-- Save and Load Buttons (Right aligned) -->
+            <div>
+                <button id="save-btn" onclick="saveOutputValues()"
+                    class="btn-floating btn-large btn-black-theme save-btn-margin" title="Save configuration"
+                    tabindex="4">
+                    <i class="material-symbols-outlined">save</i> <!-- Save icon -->
+                </button>
+                <button id="load-btn" onclick="loadOutputValues()" class="btn-floating btn-large btn-black-theme"
+                    title="Load configuration" tabindex="5">
+                    <i class="material-symbols-outlined">folder</i> <!-- Folder icon -->
+                </button>
+            </div>
+        </div>
+
+        <!-- Wrapper for output containers -->
+        <div class="outputs-row">
+            <!-- Column 1 for outputs 1-4 -->
+            <div class="column">
+                {% for output_id in range(1, 5) %}
+                <div class="output-container">
+                    <div class="row">
+                        <!-- Output Label as a single letter (small column) -->
+                        <div class="col s1">
+                            <h5 class="output-label">{{ ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'][output_id - 1] }}</h5>
+                        </div>
+                        <!-- Buttons (larger column) -->
+                        <div class="col s11">
+                            <button id="on-off-{{ output_id }}"
+                                onclick="sendCommand('/toggle_on/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large on-off-btn" title="Toggle motor on/off"
+                                tabindex="{{ ((output_id - 1) * 4) + 1 + 5 }}"></button>
+                            <button id="direction-{{ output_id }}"
+                                onclick="sendCommand('/toggle_dir/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Toggle motor direction"
+                                tabindex="{{ ((output_id - 1) * 4) + 2 + 5 }}">
+                                <i class="material-symbols-outlined"
+                                    id="direction-icon-{{ output_id }}">rotate_right</i>
+                            </button>
+                            <button id="decrease-{{ output_id }}"
+                                onclick="sendCommand('/decrease_power/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Decrease speed"
+                                tabindex="{{ ((output_id - 1) * 4) + 3 + 5 }}">
+                                <i class="material-symbols-outlined">remove_circle</i>
+                            </button>
+                            <span id="power-level-{{ output_id }}" class="power-level-display">
+                                <span class="material-symbols-outlined">circle</span>
+                            </span>
+                            <button id="increase-{{ output_id }}"
+                                onclick="sendCommand('/increase_power/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Increase speed"
+                                tabindex="{{ ((output_id - 1) * 4) + 4 + 5 }}">
+                                <i class="material-symbols-outlined">add_circle</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Column 2 for outputs 5-8 -->
+            <div class="column">
+                {% for output_id in range(5, 9) %}
+                <div class="output-container">
+                    <div class="row">
+                        <!-- Output Label as a single letter (small column) -->
+                        <div class="col s1">
+                            <h5 class="output-label">{{ ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'][output_id - 1] }}</h5>
+                        </div>
+                        <!-- Buttons (larger column) -->
+                        <div class="col s11">
+                            <button id="on-off-{{ output_id }}"
+                                onclick="sendCommand('/toggle_on/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large on-off-btn" title="Toggle motor on/off"
+                                tabindex="{{ ((output_id - 1) * 4) + 1 + 5 }}"></button>
+                            <button id="direction-{{ output_id }}"
+                                onclick="sendCommand('/toggle_dir/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Toggle motor direction"
+                                tabindex="{{ ((output_id - 1) * 4) + 2 + 5 }}">
+                                <i class="material-symbols-outlined"
+                                    id="direction-icon-{{ output_id }}">rotate_right</i>
+                            </button>
+                            <button id="decrease-{{ output_id }}"
+                                onclick="sendCommand('/decrease_power/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Decrease speed"
+                                tabindex="{{ ((output_id - 1) * 4) + 3 + 5 }}">
+                                <i class="material-symbols-outlined">remove_circle</i>
+                            </button>
+                            <span id="power-level-{{ output_id }}" class="power-level-display">
+                                <span class="material-symbols-outlined">circle</span>
+                            </span>
+                            <button id="increase-{{ output_id }}"
+                                onclick="sendCommand('/increase_power/{{ output_id }}', {{ output_id }})"
+                                class="btn-floating btn-large btn-black-theme" title="Increase speed"
+                                tabindex="{{ ((output_id - 1) * 4) + 4 + 5 }}">
+                                <i class="material-symbols-outlined">add_circle</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Custom container for Footer -->
+        <div class="footer-container">
+            <small>Control Lab IO © 2024 - Code licensed <a class="special-link" href="https://github.com/diegobaca/Control-Lab-IO-Remote/blob/main/LICENSE" target="_blank">MIT</a></small>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript, deferred to not block HTML parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+    <!-- Local JavaScript File, deferred to not block HTML parsing -->
+    <script src="/static/js/scripts.js" defer></script>
+
+    <script>
+        function toggleTheme() {
+            var body = document.body;
+            var themeIcon = document.getElementById('theme-icon');
+            body.classList.toggle('dark-theme');
+
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.innerText = 'dark_mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.innerText = 'light_mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').innerText = 'dark_mode';
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('theme-icon').innerText = 'light_mode';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

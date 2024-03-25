@@ -1,0 +1,362 @@
+:root {
+    --icon-text-color: #FFFFFF;
+    --output-label-color: black;
+    --button-color-light: black;
+    --button-color-dark: #2B2B2B;
+    --button-color: var(--button-color-light);
+    --disabled-button-bg-light: #DFDFDF;
+    --disabled-button-text-light: #FFFFFF;
+    --disconnected-color-light: #DFDFDF;
+}
+
+.dark-theme {
+    --icon-text-color: #CDCDCD;
+    --output-label-color: #CDCDCD;
+    --button-color: var(--button-color-dark);
+    --disabled-button-bg-dark: #111111;
+    --disabled-button-text-dark: #000;
+    --disconnected-color-dark: #111111;
+}
+
+/* Disconnected state styles */
+.disconnected-label,
+.disconnected-icon {
+    color: var(--disconnected-color-light);
+}
+
+.dark-theme .disconnected-label,
+.dark-theme .disconnected-icon {
+    color: var(--disconnected-color-dark);
+}
+
+.btn-black-theme {
+    background-color: var(--button-color) !important;
+}
+
+.btn-floating .material-symbols-outlined {
+    color: var(--icon-text-color) !important;
+}
+
+.dark-theme .btn-floating .material-symbols-outlined {
+    color: var(--icon-text-color) !important;
+}
+
+/* Disabled styles for light theme */
+.btn-floating:disabled {
+    background-color: var(--disabled-button-bg-light) !important;
+    color: var(--disabled-button-text-light) !important;
+}
+
+.btn-floating:disabled .material-symbols-outlined {
+    color: var(--disabled-button-text-light) !important;
+}
+
+/* Disabled styles for dark theme */
+.dark-theme .btn-floating:disabled {
+    background-color: var(--disabled-button-bg-dark) !important;
+    color: var(--disabled-button-text-dark) !important;
+}
+
+.dark-theme .btn-floating:disabled .material-symbols-outlined {
+    color: var(--disabled-button-text-dark) !important;
+}
+
+body {
+    background-color: #F4F4F4;
+    -webkit-user-select: none;
+    /* Chrome, Safari, and Opera */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+    cursor: default;
+    /* Override the cursor to use the default instead of text selection cursor */
+}
+
+#sticky-sentinel {
+    height: 1px;
+    width: 100%;
+    background-color: transparent;
+}
+
+.connection-container.has-shadow {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dark-theme .connection-container.has-shadow {
+    border-bottom: 1px solid #202020;
+}
+
+.dark-theme {
+    background-color: #191919;
+    color: #CDCDCD;
+}
+
+.dark-theme .output-container,
+.dark-theme .title-container {
+    background-color: #000;
+    color: #CDCDCD;
+}
+
+.dark-theme .connection-container {
+    border-bottom: 1px solid #191919;
+    background-color: #191919;
+    color: #303030;
+}
+
+.dark-theme .footer-container {
+    background-color: #191919;
+    color: #303030;
+}
+
+.dark-theme .output-container {
+    border: 1px solid #202020;
+}
+
+.on-off-btn {
+    background-color: var(--button-color);
+    color: var(--icon-text-color) !important;
+}
+
+.dark-theme .on-off-btn {
+    background-color: var(--button-color);
+    color: var(--icon-text-color) !important;
+}
+
+.btn-floating {
+    background-color: var(--button-color);
+    color: var(--icon-text-color) !important;
+}
+
+.dark-theme .btn-floating {
+    background-color: var(--button-color);
+    color: var(--icon-text-color) !important;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+
+.special-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+    pointer-events: none;
+    /* This makes it not clickable and not draggable */
+}
+
+.output-container {
+    border: 1px solid #e0e0e0;
+    padding: 15px 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #FFFFFF;
+    max-width: 550px;
+}
+
+.title-container {
+    background-color: #000;
+    color: #FFFFFF;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.connection-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #F4F4F4;
+    border-bottom: 1px solid #F4F4F4;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.connection-container .flex-grow {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-title-group {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.title-text {
+    margin: 0;
+}
+
+.save-btn-margin {
+    margin-right: 5px;
+}
+
+.power-level-display .material-symbols-outlined {
+    font-size: 48px;
+    vertical-align: middle;
+}
+
+.row {
+    display: flex;
+    /* Use flexbox layout */
+    align-items: center;
+    /* Vertically center items in the container */
+    justify-content: space-between;
+    /* Distribute space between items */
+    width: 100%;
+    /* Ensure the row takes full width of its parent */
+    margin-bottom: 0px;
+    height: 60px;
+}
+
+.row .col {
+    padding: 15px 8px 15px 10px;
+}
+
+h5 {
+    margin: 0;
+}
+
+.col.s1,
+.col.s11 {
+    display: flex;
+    /* Use flexbox layout */
+    align-items: center;
+    /* Align items vertically in the center */
+    justify-content: center;
+    /* Center items horizontally */
+}
+
+.col.s1 {
+    flex: 1;
+    /* Take 1 portion of the space */
+}
+
+.col.s11 {
+    flex: 11;
+    /* Take 11 portions of the space */
+    justify-content: space-evenly;
+    /* Distribute space evenly between the buttons */
+}
+
+.on-off-btn {
+    margin-right: 10px;
+    margin-left: -10px;
+}
+
+.footer-container {
+    background-color: #F4F4F4;
+    color: #CDCDCD;
+    padding: 10px 0 30px 0;
+    width: 100%;
+    text-align: center;
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-container small {
+    font-size: smaller;
+}
+
+.btn-floating.on-off-btn:disabled {
+    cursor: not-allowed !important;
+}
+
+.disable-pointer {
+    pointer-events: none;
+}
+
+.btn-floating {
+    cursor: pointer !important;
+    transition: transform 0.2s ease;
+}
+
+/* Hover effects for devices that support hover */
+@media (hover: hover) {
+    .btn-floating:hover {
+        transform: scale(1.05);
+    }
+}
+
+.btn-floating.focused,
+.btn-large.focused {
+    opacity: 0.6;
+}
+
+.btn-floating:active,
+.btn-floating.active {
+    transform: scale(0.85);
+}
+
+/* Style for outputs in two columns when the viewport is at least 800px wide */
+@media screen and (min-width: 850px) {
+    .outputs-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .column {
+        width: 50%;
+        /* Set the width for each column */
+        padding: 0 10px;
+        /* Space between the columns */
+        box-sizing: border-box;
+    }
+
+    .connection-container .flex-grow {
+        margin-left: 65px;
+    }
+
+    .row .col {
+        padding: 15px 1px 15px 10px;
+    }
+
+    .output-container {
+        margin-bottom: 20px;
+        padding: 15px 0px;
+        /* Space between each output container */
+    }
+}
+
+html {
+    visibility: visible;
+    opacity: 1;
+}
+
+.no-transition * {
+    transition: none !important;
+    animation: none !important;
+}

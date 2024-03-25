@@ -1,0 +1,1 @@
+{'On': [False, False, False, False, False, False, False, False], 'Dir': [True, True, True, True, True, True, True, True], 'Pow': [3, 3, 3, 3, 3, 3, 3, 3]}
